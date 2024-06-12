@@ -17,6 +17,7 @@
     "@astrojs/tailwind": "^5.1.0",
     "@fontsource-variable/space-grotesk": "^5.0.18",
     "astro": "^4.9.2",
+    "astro-critters": "^2.1.10",
     "astro-pagefind": "^1.5.0",
     "clsx": "^2.1.1",
     "tailwind-merge": "^2.3.0",
