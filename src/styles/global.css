@@ -27,7 +27,7 @@ body {
 header {
   @apply fixed left-0 right-0 top-0 z-50 py-6;
   @apply bg-neutral-100/75 dark:bg-neutral-900/75;
-  @apply saturate-200 backdrop-blur-sm;
+  @apply saturate-200 backdrop-blur-md;
 }
 
 main {
@@ -44,12 +44,31 @@ article {
   @apply prose-headings:text-black prose-headings:dark:text-white;
 }
 
+article h1 {
+  @apply pt-10;
+  @apply tracking-tight;
+}
+
+article h2 {
+  @apply tracking-tight;
+}
+
+article h3 {
+  @apply pt-6;
+}
+
 @layer utilities {
   article a {
     @apply font-sans text-current underline underline-offset-[3px];
     @apply decoration-black/30 dark:decoration-white/30;
     @apply transition-colors duration-300 ease-in-out;
   }
+
+  article a::after {
+    content: "↗";
+    @apply ml-0;
+  }
+
   article a:hover {
     @apply text-black dark:text-white;
     @apply decoration-black/50 dark:decoration-white/50;

@@ -6,24 +6,25 @@ import PageFind from "@components/PageFind.astro";
 import { SITE } from "@consts";
 
 type Props = {
-  title: string;
-  description: string;
+	title: string;
+	description: string;
+	cover: string;
 };
 
-const { title, description } = Astro.props;
+const {title, description, cover} = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <Head title={`${title} | ${SITE.TITLE}`} description={description} />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <slot />
-    </main>
-    <Footer />
-    <PageFind />
-  </body>
+<head>
+    <Head title={ `${ title } — ${ SITE.TITLE }` } description={ description } cover={ cover }/>
+</head>
+<body>
+<Header/>
+<main>
+    <slot/>
+</main>
+<Footer/>
+<PageFind/>
+</body>
 </html>

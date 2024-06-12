@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "./FormattedDate.astro";
+
+type Props = {
+	entry: CollectionEntry<"blog">;
+};
+
+const {entry} = Astro.props as {
+	entry: CollectionEntry<"blog">;
+};
+---
+
+<a href={ `/${ entry.collection }/${ entry.slug }` }>
+    <div class="flex flex-col lg:flex-row bg-white dark:bg-black rounded-2xl overflow-hidden ">
+        <img class="lg:max-w-2xl" src={ entry.data.cover.src } alt=""/>
+        <div class="flex flex-col justify-between p-6 lg:p-8">
+            <div class="flex flex-col">
+                <div class="uppercase text-xs font-bold mb-1 lg:mb-2 text-black/60 dark:text-white/60">
+					{ entry.data.type }
+                </div>
+                <div class="font-bold text-xl lg:text-3xl tracking-[-0.2px] lg:tracking-tight text-black dark:text-white mb-8">
+					{ entry.data.title }
+                </div>
+            </div>
+            <div class="font-bold text-sm tracking-tight text-black/60 dark:text-white/60">
+                <FormattedDate date={ entry.data.date }/>
+            </div>
+        </div>
+    </div>
+</a>

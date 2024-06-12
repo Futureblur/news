@@ -1,82 +1,128 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import { readingTime } from "@lib/utils";
 import BackToPrevious from "@components/BackToPrevious.astro";
 import PostNavigation from "@components/PostNavigation.astro";
-import TableOfContents from "@components/TableOfContents.astro";
-import Giscus from "@components/Giscus.astro";
 
 export async function getStaticPaths() {
-  const posts = (await getCollection("blog"))
-    .filter((post) => !post.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: post,
-  }));
+	const posts = (await getCollection("blog"))
+		.filter((post) => !post.data.draft)
+		.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+	return posts.map((post) => ({
+		params: {slug: post.slug},
+		props: post,
+	}));
 }
-type Props = CollectionEntry<"blog">;
 
 const posts = await getCollection("blog");
 
 function getNextPost() {
-  let postIndex;
-  for (const post of posts) {
-    if (post.slug === Astro.params.slug) {
-      postIndex = posts.indexOf(post);
-      return posts[postIndex + 1];
-    }
-  }
+	let postIndex;
+	for (const post of posts) {
+		if (post.slug === Astro.params.slug) {
+			postIndex = posts.indexOf(post);
+			return posts[postIndex + 1];
+		}
+	}
 }
 
 function getPrevPost() {
-  let postIndex;
-  for (const post of posts) {
-    if (post.slug === Astro.params.slug) {
-      postIndex = posts.indexOf(post);
-      return posts[postIndex - 1];
-    }
-  }
+	let postIndex;
+	for (const post of posts) {
+		if (post.slug === Astro.params.slug) {
+			postIndex = posts.indexOf(post);
+			return posts[postIndex - 1];
+		}
+	}
 }
 
 const nextPost = getNextPost();
 const prevPost = getPrevPost();
 
 const post = Astro.props;
-const { Content, headings } = await post.render();
+const {Content} = await post.render();
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
-  <Container>
-    <div class="animate">
-      <BackToPrevious href="/blog">Back to blog</BackToPrevious>
-    </div>
-    <div class="my-10 space-y-1">
-      <div class="animate flex items-center gap-1.5">
-        <div class="font-base text-sm">
-          <FormattedDate date={post.data.date} />
+<Layout title={ post.data.title } description={ post.data.description }
+        cover={ post.data.cover.src }>
+    <Container props="max-w-[730px]">
+        <div class="animate">
+            <BackToPrevious href="/">Back</BackToPrevious>
         </div>
-        &bull;
-        <div class="font-base text-sm">
-          {readingTime(post.body)}
+        <div class="my-10 space-y-2">
+            <div class="animate flex items-center gap-1.5">
+                <div class="font-semibold text-sm" data-pagefind-body>
+                    <FormattedDate date={ post.data.date }/>
+                </div>
+                &bull;
+                <div class="font-base text-sm">
+					{ readingTime(post.body) }
+                </div>
+            </div>
+            <h1 class="animate pb-2 text-3xl tracking-[-0.4px] font-bold text-black dark:text-white md:tracking-tight md:text-5xl"
+                data-pagefind-body>
+				{ post.data.title }
+            </h1>
+            <button id="share-button" data-url={ post.data.url }
+                    class="animate p-2 px-4 rounded-full bg-black/5 dark:bg-white/5 inline-flex text-sm font-bold cursor-pointer hover:bg-black/10 hover:dark:bg-white/10">
+                Share ↗
+            </button>
         </div>
-      </div>
-      <h1 class="animate text-3xl font-semibold text-black dark:text-white">
-        {post.data.title}
-      </h1>
-    </div>
-    <TableOfContents headings={headings} />
-    <article class="animate">
-      <Content />
-      <div class="mt-24">
-        <PostNavigation prevPost={prevPost} nextPost={nextPost} />
-      </div>
-      <div class="mt-24">
-        <Giscus />
-      </div>
-    </article>
-  </Container>
+        <article class="animate text-lg" data-pagefind-body>
+            <Content/>
+            <hr>
+            <div class="space-y-2 mt-12">
+                <div class="font-bold text-sm">Futureblur's Philosophy</div>
+                <div class="text-sm">
+                    Start with an incredible idea. Don't be afraid to reach for the stars. The first step is all about
+                    creating the prototype. But why stop there? Next up is polishing, where most of the time will be
+                    spent. Embrace the countless hours, because deep down we know it's worth it. Once happy with the
+                    results, repeat as often as needed. The journey isn't an easy one for sure, but that's exactly what
+                    makes it so special. So rewarding. So uplifting. So beautiful.
+                </div>
+            </div>
+            <div class="mt-12">
+                <div class="font-bold text-sm uppercase">Posted by</div>
+                <a class="inline-flex mt-4 space-x-2.5 no-underline after:hidden"
+                   href="https://instagram.com/withrasul">
+                    <img src="/images/withrasul.jpeg" alt="Rasul Adasov" class="w-10 h-10 rounded-full"/>
+                    <div class="space-y-0.5 flex flex-col">
+                        <div class="flex space-x-0.5">
+                            <div class="text-sm font-semibold">Rasul Adasov</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                 class="size-5 scale-90">
+                                <path fill-rule="evenodd"
+                                      d="M16.403 12.652a3 3 0 0 0 0-5.304 3 3 0 0 0-3.75-3.751 3 3 0 0 0-5.305 0 3 3 0 0 0-3.751 3.75 3 3 0 0 0 0 5.305 3 3 0 0 0 3.75 3.751 3 3 0 0 0 5.305 0 3 3 0 0 0 3.751-3.75Zm-2.546-4.46a.75.75 0 0 0-1.214-.883l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z"
+                                      clip-rule="evenodd"/>
+                            </svg>
+
+
+                        </div>
+                        <div class="text-sm text-black/60 dark:text-white/60 font-mono">@withrasul</div>
+                    </div>
+                </a>
+            </div>
+            <div class="mt-24">
+                <PostNavigation prevPost={ prevPost } nextPost={ nextPost }/>
+            </div>
+        </article>
+    </Container>
 </Layout>
+
+<script is:inline>
+	async function getSharableLink() {
+		const url = shareButton.getAttribute("data-url");
+		await navigator.clipboard.writeText(url);
+		shareButton.textContent = "Copied";
+		setTimeout(() => {
+			shareButton.textContent = "Share ↗";
+		}, 2000);
+	}
+
+	// Find button with id "share-button" and add event listener, the url is stored in the data-url attribute
+	const shareButton = document.getElementById("share-button");
+	shareButton?.addEventListener("click", getSharableLink);
+</script>
