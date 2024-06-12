@@ -14,7 +14,9 @@ const {entry} = Astro.props as {
 
 <a href={ `/${ entry.collection }/${ entry.slug }` }>
     <div class="flex flex-col lg:flex-row bg-white dark:bg-black rounded-2xl overflow-hidden ">
-        <Image class="lg:max-w-2xl" src={ entry.data.cover } alt={ entry.data.coverDescription }/>
+        <Image class="lg:max-w-2xl" src={ entry.data.cover } alt={ entry.data.coverDescription }
+               widths={ [240, 540, 960, 1960] }
+               sizes={ `(max-width: 360px) 240px, (max-width: 960px) 540px, (max-width: 1600px) 960px, ${ 1960 }px` }/>
         <div class="flex flex-col justify-between p-6 lg:p-8">
             <div class="flex flex-col">
                 <div class="uppercase text-xs font-bold mb-1 lg:mb-2 text-black/60 dark:text-white/60">
